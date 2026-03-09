@@ -10,18 +10,28 @@ const finalScoreText = document.getElementById('final-score');
 let playerName = "";
 let clawX = 250;
 let score = 0;
-let timeLeft = 30; 
+let timeLeft = 60; 
 let isDropping = false;
 let isGameOver = false;
 let gameTimer = null;
 let currentCorrectAnswer = "";
 
+// 原始題庫
 const antiFraudPool = [
     { q: "消費者服務專線的電話是？", options: ["📞 1950", "📞 110", "📞 119", "📞 123"], a: "📞 1950" },
     { q: "以下哪些是常見的詐騙手法？", options: ["💌 網路交友", "📈 假投資", "✅ 以上皆是", "🎁 領點數"], a: "✅ 以上皆是" },
-    { q: "收到自稱檢察官電話說要監管帳戶？", options: ["☎️ 撥打 165", "💰 匯款給他", "🏦 操作 ATM", "📱 不予理會"], a: "☎️ 撥打 165" },
-    { q: "網購接到電話，要求去 ATM 解除設定？", options: ["🙅 拒絕聽從", "🏦 前往 ATM", "🔢 提供個資", "💳 刷卡驗證"], a: "🙅 拒絕聽從" }
+    { q: "收到自稱檢察官電話說要監管帳戶？", options: ["☎️ 撥打 165", "💰 匯款給他", "🏦 操作 ATM", ], a: "☎️ 撥打 165" },
+    { q: "賄選檢舉專線為", options: ["📞 0800-024-099#4", "📞 2936-5522", "📞 2882-5252", "📞 119"], a: "📞 0800-024-099#4" },
+    { q: "公務員赴大陸事後返臺上班多久內應填寫「返臺通報表」？", options: ["一星期內", "不用填(ﾟ∀。)", "一年後", "一年內"], a: "一星期內" },
+    { q: "透明晶質獎的執行機關是？", options: ["廉政署", "數發部", "文山區公所", "體育部"], a: "廉政署" },
+    { q: "透明晶質獎舉辦目的是？", options: ["推動廉能治理", "激勵行政團隊", "樹立標竿學習", "以上皆是"], a: "以上皆是" },
+    { q: "依規定，公務員收受與職務有利害關係者之餽贈，市價在多少以下為例外？", options: ["新臺幣200元", "新臺幣1000元", "辛巴威幣500000元", "新臺幣2000元"], a: "新臺幣200元" },
+    { q: "電腦開機密碼時常忘記，所以最好都不要換比較好？", options: ["對，我就懶(^y^)", "定期更換，公務機密人人有責", "看我心情(´ー`)"], a: "定期更換，公務機密人人有責" },
+    { q: "公益揭弊者保護法的「揭弊的人」保護對象為？", options: ["政府機關（構）", "國營事業", "受政府控制之事業團體", "以上皆是"], a: "以上皆是" }
 ];
+
+// 【關鍵修改 1】定義剩餘題庫副本
+let availableQuestions = [];
 
 function startGameWithLogin() {
     const input = document.getElementById('player-name');
@@ -69,13 +79,16 @@ function confirmReset() {
 
 function restartGame() {
     score = 0;
-    timeLeft = 30;
+    timeLeft = 60; 
     isGameOver = false;
     isDropping = false;
     clawX = 250;
     
+    // 【關鍵修改 2】重新開始時重置題庫
+    availableQuestions = [...antiFraudPool]; 
+    
     scoreText.innerText = "0";
-    timerText.innerText = "30";
+    timerText.innerText = "60";
     claw.style.left = "250px";
     claw.style.top = "0px";
     gameOverOverlay.style.display = 'none';
@@ -87,8 +100,18 @@ function restartGame() {
 
 function initGame() {
     itemsArea.innerHTML = '';
-    const currentLevel = antiFraudPool[Math.floor(Math.random() * antiFraudPool.length)];
-    targetText.innerText = currentLevel.q;
+
+    // 【關鍵修改 3】檢查題目是否用完，用完就重來
+    if (availableQuestions.length === 0) {
+        availableQuestions = [...antiFraudPool];
+    }
+
+    // 隨機選一題並從副本移除
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    const currentLevel = availableQuestions[randomIndex];
+    availableQuestions.splice(randomIndex, 1);
+
+    targetText.innerHTML = currentLevel.q; // 支援 HTML 換行
     currentCorrectAnswer = currentLevel.a;
     
     const placedItems = [];
@@ -101,7 +124,7 @@ function initGame() {
         let randomLeft, randomBottom, attempts = 0;
         do {
             randomLeft = Math.floor(Math.random() * (itemsArea.offsetWidth - 100)) + 25;
-            randomBottom = Math.floor(Math.random() * 260) + 40; 
+            randomBottom = Math.floor(Math.random() * 200) + 40; 
             let isOverlapping = false;
             for (let other of placedItems) {
                 if (Math.abs(randomLeft - other.left) < 100 && Math.abs(randomBottom - other.bottom) < 50) {
@@ -141,7 +164,7 @@ function dropClaw() {
     items.forEach(item => {
         const itemCenterX = item.offsetLeft + 40; 
         const distX = Math.abs(clawX - itemCenterX);
-        if (distX < 45) { 
+        if (distX < 50) { 
             if (item.offsetTop < highestY) {
                 highestY = item.offsetTop;
                 caughtItem = item;
@@ -154,21 +177,20 @@ function dropClaw() {
 
     setTimeout(() => {
         if (caughtItem) {
-            caughtItem.style.transition = "top 0.7s cubic-bezier(0.5, 0, 0.5, 1)";
+            caughtItem.style.transition = "top 0.7s";
             caughtItem.style.bottom = "auto";
             caughtItem.style.top = (stopDepth + 35) + "px";
             
             setTimeout(() => {
                 caughtItem.style.top = "-100px"; 
                 if (caughtItem.innerText === currentCorrectAnswer) {
-                    score += 20;
+                    score += 10; 
                     scoreText.innerText = score;
-                    if (score >= 200) {
+                    if (score >= 100) { 
                         winGame();
                     } else {
-                        timeLeft += 5;
+                        timeLeft += 8; 
                         timerText.innerText = timeLeft;
-                        // 換題延遲：等夾子升到一半再換題 (0.5秒)
                         setTimeout(() => {
                             initGame();
                         }, 500);
@@ -180,7 +202,6 @@ function dropClaw() {
             }, 50);
         }
         claw.style.top = "0px";
-        // 夾子回升完畢後解鎖
         setTimeout(() => { isDropping = false; }, 700);
     }, 750);
 }
