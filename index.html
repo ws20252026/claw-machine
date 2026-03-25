@@ -2,18 +2,24 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>廉政挑戰賽-文山區公所政風室</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+
+    <title>廉政大夾擊，文山第一名！</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="login-overlay" class="login-screen">
     <div class="login-card">
-        <h2>🛡️ 廉政挑戰賽</h2>
-        <p>請輸入您的姓名或分機開始挑戰</p>
+        <h2>🛡️ 廉政大夾擊</h2>
+        <p>請輸入您的「姓名或分機」開始挑戰</p>
         <input type="text" id="player-name" placeholder="您的名字..." maxlength="10">
-        <button class="action-btn" onclick="startGameWithLogin()">進入遊戲</button>
+        <button class="action-btn" id="start-btn">進入遊戲</button>
         <p style="font-size: 11px; color: #888; margin-top: 15px;">文山區公所政風室自製</p>
     </div>
 </div>
@@ -30,35 +36,48 @@
         </div>
     </div>
     
-    <div id="status-bar">
-        <div class="timer-box">⏱️ 剩餘時間：<span id="timer">60</span>s</div>
-        <div id="instruction">🎮 任務：對準中心！(⬅️ ➡️ 移動，空白鍵下抓)</div>
+    <div id="instruction-bar">
+        🎮 任務：夾取正確答案！(手機版請點擊下方控制鈕，電腦版可使用鍵盤 ⬅️➡️ 移動並按「空白鍵」抓取或下方控制鈕。可能有誤抓或空抓，歡迎多多挑戰手感！）
     </div>
 
+    <div class="status-row">
+        <button id="shuffle-btn" onclick="shufflePositions()">
+            📦 選項夾不到？點我重新排版
+        </button>
+        
+        <div class="timer-display">
+            ⏱️ 剩餘時間：<span id="timer">600</span>s
+        </div>
+    </div>
+   
     <div id="machine-wrapper">
         <div id="machine-inner">
             <div id="claw-body">
                 <div class="line"></div>
                 <div class="hand"></div>
             </div>
-            
             <div id="items-area"></div>
             
-            <div id="game-over-overlay" class="overlay">
+            <div id="game-over-overlay" class="overlay" style="display:none;">
                 <h2>⌛ 時間到！</h2>
                 <p>最終得分：<span id="final-score">0</span></p>
                 <button class="action-btn" onclick="restartGame()">重新挑戰</button>
             </div>
 
-            <div id="win-overlay" class="overlay">
+            <div id="win-overlay" class="overlay" style="display:none;">
                 <h2>🏆 恭喜通關！</h2>
-                <p><span id="winner-name-display" style="color:#2ecc71; font-weight:bold;"></span> 已成為廉政小高手！</p>
-                <p style="font-size: 18px;">獲得滿分 100 分！</p>
-                <button class="action-btn" onclick="restartGame()" style="background: #f1c40f; color: #333;">再玩一次</button>
+                <button class="action-btn" onclick="restartGame()">再玩一次</button>
             </div>
         </div>
     </div>
-    <div style="text-align: right; font-size: 13px; color: #bdc3c7; margin-top: 10px; font-weight: bold; letter-spacing: 1px;">
+
+    <div id="mobile-controls">
+        <button class="ctrl-btn" id="btn-left">⬅️ 左移</button>
+        <button class="ctrl-btn" id="btn-drop">🏗️ 抓取</button>
+        <button class="ctrl-btn" id="btn-right">右移 ➡️</button>
+    </div>
+
+    <div class="footer-sign">
         文山區公所政風室自製
     </div>
 </div>
