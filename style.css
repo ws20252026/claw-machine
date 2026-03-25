@@ -5,7 +5,7 @@ body {
     justify-content: center; 
     align-items: center; 
     min-height: 100vh; 
-    font-family: sans-serif; 
+    font-family: sans-serif;
     overflow: hidden; 
 }
 
@@ -15,211 +15,76 @@ body {
     max-width: 500px; 
     background-color: #2c3e50; 
     padding: 12px; 
-    border-radius: 15px; 
+    border-radius: 15px;
     color: white; 
     position: relative; 
     box-sizing: border-box;
-}
-
-/* --- 第一排：Header 樣式 --- */
-#header { 
-    display: flex; 
-    justify-content: space-between; 
-    margin-bottom: 8px; 
-    gap: 8px; 
 }
 
 .question-box { 
     background: #f1c40f; 
     color: #333; 
     padding: 8px; 
-    border-radius: 10px; 
+    border-radius: 10px;
     font-weight: bold; 
-    flex: 1; 
-    font-size: 14px; 
     min-height: 55px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-}
-
-.header-right { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 5px; 
-    min-width: 100px; 
-}
-
-.score-box { 
-    background: #3498db; 
-    padding: 5px; 
-    border-radius: 5px; 
-    font-size: 14px; 
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-#user-display { font-size: 11px; color: #f1c40f; font-weight: bold; }
-
-/* 核心修正：加入 touch-action 停用 iOS 雙擊縮放偵測 */
-#manual-reset-btn {
-    background: white;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    padding: 3px;
-    font-size: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    touch-action: manipulation;
-}
-
-/* --- 第二排：任務說明 --- */
-#instruction-bar {
-    margin: 10px 0 5px 0;
-    font-size: 13px;
-    color: #bdc3c7;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* --- 第三排：左右佈局 --- */
-.status-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    padding: 0 5px;
-}
-
-/* 核心修正：加入 touch-action */
-#shuffle-btn {
-    background: #f39c12; 
-    color: white; 
-    border: 2px solid white;
-    border-radius: 20px; 
-    padding: 6px 12px; 
-    font-size: 12px;
-    font-weight: bold; 
-    cursor: pointer; 
-    box-shadow: 0 3px #d35400;
-    transition: 0.2s;
-    touch-action: manipulation;
-}
-
-#shuffle-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px #d35400;
 }
 
 .timer-display {
     background: #e74c3c;
     padding: 5px 12px;
     border-radius: 8px;
-    font-size: 13px;
     font-weight: bold;
-    color: white;
 }
 
-/* --- 夾娃娃機本體樣式 --- */
 #machine-wrapper { 
     width: 100%; 
     height: 340px; 
     background: #ecf0f1; 
-    position: relative; 
+    position: relative;
     border: 6px solid #333; 
     border-radius: 10px; 
     overflow: hidden; 
 }
-
-#claw-body { 
-    width: 50px; 
-    position: absolute; 
-    top: 0; 
-    left: 225px; 
-    z-index: 20; 
-    transition: top 0.7s; 
-}
-
-.line { width: 4px; height: 500px; background: #7f8c8d; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); }
-.hand { width: 34px; height: 20px; background: #95a5a6; border-radius: 5px 5px 0 0; margin: 0 auto; position: relative; }
-.hand::before, .hand::after { content: ''; position: absolute; bottom: -22px; width: 10px; height: 24px; border: 3px solid #7f8c8d; border-top: none; }
-.hand::before { left: -6px; border-radius: 0 0 0 10px; transform: rotate(-15deg); border-right: none; }
-.hand::after { right: -6px; border-radius: 0 0 10px 0; transform: rotate(15deg); border-left: none; }
 
 .item {
     position: absolute;
     padding: 6px 10px;
     background: white;
     color: #333;
-    border: 2px solid #3498db;
+    border: 3px solid #3498db;
     border-radius: 15px;
-    font-size: 13px;
     font-weight: bold;
-    z-index: 5;
-    
-    max-width: 120px;
-    box-sizing: border-box;
-    word-wrap: break-word;
-    text-align: center;
-    box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
-    /* 防止長按選取文字影響遊戲手感 */
-    user-select: none;
-    -webkit-user-select: none;
 }
 
-/* 核心修正：針對所有控制按鈕停用雙擊縮放，並防止長按選取 */
-#mobile-controls { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
 .ctrl-btn { 
-    flex: 1; 
-    max-width: 120px; 
+    flex: 1;
     padding: 16px 0; 
     font-size: 18px; 
     font-weight: bold; 
     color: white; 
-    border: none; 
     border-radius: 12px; 
-    cursor: pointer; 
-    background-color: #6c757d; 
+    background-color: #6c757d;
     box-shadow: 0 4px 0 rgba(0,0,0,0.3); 
-    transition: all 0.1s; 
-    user-select: none; 
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent; 
     touch-action: manipulation; 
 }
-#btn-drop { background-color: #e67e22; flex: 1.2; }
-.ctrl-btn:active { transform: translateY(4px); box-shadow: none; }
 
-/* 覆蓋層 */
-.overlay, .login-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; border-radius: 10px; }
-.login-card { background: white; padding: 20px; border-radius: 15px; color: #333; width: 260px; text-align: center; }
+#btn-drop { background-color: #e67e22; }
 
-/* 核心修正：輸入框字體設定為 16px 防止 iOS 點擊時自動放大畫面 */
-#player-name {
-    font-size: 16px;
-    padding: 8px;
-    width: 80%;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.login-screen { 
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.9); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 100; 
 }
 
-.action-btn { 
-    padding: 10px 25px; 
-    background: #2ecc71; 
-    color: white; 
-    border: none; 
-    border-radius: 25px; 
-    font-weight: bold; 
-    cursor: pointer; 
-    margin-top: 10px; 
-    touch-action: manipulation;
-}
-
-.footer-sign {
-    text-align: right; 
-    font-size: 12px; 
-    color: #bdc3c7; 
-    margin-top: 10px; 
-    font-weight: bold;
+.login-card { 
+    background: white; 
+    border-radius: 15px; 
+    color: #333; 
+    text-align: center; 
 }
